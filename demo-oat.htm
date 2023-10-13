@@ -30,7 +30,7 @@ const cmap = {
 };
 
 var vectorTileStyling = {
-    "Lake": function(properties) {
+    ne_110m_lakes: function(properties) {
         return ({
             fill: true,
             fillColor: cmap[properties.name],
@@ -49,10 +49,6 @@ var mapVectorTileOptions = {
     // maxNativeZoom: 11,
     // minZoom: 1,
     vectorTileLayerStyles: vectorTileStyling,
-};
-
-var options={
-    interactive: true
 };
 
 //var pbfURL='http://localhost:9200/hex350_grid_pm10_2019/_mvt/geometry/{z}/{x}/{y}?grid_precision=1';
