@@ -54,7 +54,7 @@ const cmap = {
             opacity: 1.0,
         });
     }
-} */
+} 
 
  var vectorTileStyling = {
     "public.ne_50m_admin_0_countries": function(properties) {
@@ -69,8 +69,8 @@ const cmap = {
         });
     }
 } 
+*/
 
-/*
 var vectorTileStyling = {
     meta: function(properties) {
         return ({
@@ -93,7 +93,7 @@ var vectorTileStyling = {
         });
     }
 }
-
+/*
 var vectorTileStyling = {
     "public.ne_50m_admin_0_countries": function(properties) {
         return ({
@@ -116,10 +116,10 @@ var mapVectorTileOptions = {
     vectorTileLayerStyles: vectorTileStyling,
 };
 
-//var pbfURL='http://localhost:9200/hex350_grid_pm10_2019/_mvt/geometry/{z}/{x}/{y}?&grid_precision=0&with_labels=true';
+var pbfURL='http://localhost:9200/arqmadeira_nutsi_caop2022,ef_aguasbalneares/_mvt/geometry/{z}/{x}/{y}?&grid_precision=0';
 //var pbfURL='https://emotional.byteroad.net/collections/hex350_grid_pm10_2019/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
-var pbfURL='http://localhost:7800/public.ne_50m_admin_0_countries/{z}/{x}/{y}.pbf';
-
+//var pbfURL='http://localhost:7800/public.ne_50m_admin_0_countries/{z}/{x}/{y}.pbf';
+//var pbfURL='http://localhost:5000/collections/arqmadeira_caop2022/tiles/WorldCRS84Quad/z/x/y?f=mvt';
 
 
 //var pbfURL='https://demo.pygeoapi.io/master/collections/lakes/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
