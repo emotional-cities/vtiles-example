@@ -6,7 +6,7 @@
 <script type="text/javascript" src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
 <script type="text/javascript" src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js"></script>
 <script>
-map = L.map('map').setView({ lng: -0.08, lat: 51.509 }, 3);
+map = L.map('map').setView({ lng: -17.0070743, lat: 32.6601593 }, 9);
 map.addLayer(
     new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -16,61 +16,6 @@ map.addLayer(
     ext: 'jpg'
     }));
 
-/* const cmap = {
-    "Aral Sea": "#f2e6c7",
-    "Vänern": "#8fa37e",
-    "Great Slave Lake": "#d7a59f",
-    "L. Ontario": "#d7ded1",
-    "L. Erie": "#c3abaf",
-    "Lake Superior": "#e4cbc8",
-    "Lake Victoria": "#c2d0d9",
-    "Lake Ladoga": "#f0d17d",
-    "Balqash Köli": "#678ea6",
-    "Lake Tanganyika": "#94666e"
-}; */
-
-const cmap = {
-    "Greenland": "#f2e6c7",
-    "Iceland": "#8fa37e",
-    "Sweeden": "#d7a59f",
-    "Portugal": "#d7ded1",
-    "Spain": "#c3abaf",
-    "United Kingdom": "#e4cbc8",
-    "Italy": "#c2d0d9",
-    "Denmark": "#f0d17d",
-    "Germany": "#678ea6",
-    "Russia": "#94666e"
-};
-
-/* var vectorTileStyling = {
-    ne_110m_lakes: function(properties) {
-        return ({
-            fill: true,
-            fillColor: cmap[properties.name],
-            color: cmap[properties.name],
-            fillOpacity: 1.0,
-            weight: 5,
-            //color: "#ffffff",
-            opacity: 1.0,
-        });
-    }
-} 
-
- var vectorTileStyling = {
-    "public.ne_50m_admin_0_countries": function(properties) {
-        return ({
-            fill: true,
-            fillColor: cmap[properties.name],
-            color: cmap[properties.name],
-            fillOpacity: 1.0,
-            weight: 5,
-            //color: "#ffffff",
-            opacity: 1.0,
-        });
-    }
-} 
-*/
-
 var vectorTileStyling = {
     meta: function(properties) {
         return ({
@@ -79,55 +24,49 @@ var vectorTileStyling = {
             fillOpacity: 0.0,
             weight: 1,
             color: "green",
-            opacity: 0.7,
+            opacity: 0.8,
         });
     },
     hits: function(properties) {
         return ({
             fill: true,
-            fillColor: "#ffffff",
-            fillOpacity: 0.5,
+            fillColor: "#E77084",
+            fillOpacity: 0.8,
             weight: 1,
             color: "red",
-            opacity: 0.7,
+            opacity: 0.9,
         });
     }
 }
-/*
-var vectorTileStyling = {
-    "public.ne_50m_admin_0_countries": function(properties) {
-        return ({
-            fill: true,
-            fillColor: "#ffffff",
-            fillOpacity: 0.0,
-            weight: 1,
-            color: "green",
-            opacity: 0.7,
-        });
-    }
-}
-*/
 
 var mapVectorTileOptions = {
     rendererFactory: L.canvas.tile,
     interactive: true,
     // maxNativeZoom: 11,
-    // minZoom: 1,
+    // minZoom: 4,
     vectorTileLayerStyles: vectorTileStyling,
 };
 
-var pbfURL='http://localhost:9200/arqmadeira_nutsi_caop2022,ef_aguasbalneares/_mvt/geometry/{z}/{x}/{y}?&grid_precision=0';
-//var pbfURL='https://emotional.byteroad.net/collections/hex350_grid_pm10_2019/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
-//var pbfURL='http://localhost:7800/public.ne_50m_admin_0_countries/{z}/{x}/{y}.pbf';
-//var pbfURL='http://localhost:5000/collections/arqmadeira_caop2022/tiles/WorldCRS84Quad/z/x/y?f=mvt';
-
-
-//var pbfURL='https://demo.pygeoapi.io/master/collections/lakes/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
+//var pbfURL='http://localhost:9200/arqmadeira_nutsi_caop2022,ef_aguasbalneares/_mvt/geometry/{z}/{x}/{y}?&grid_precision=0';
+var pbfURL='http://localhost:5000/collections/arqmadeira_nutsi_caop2022/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
 
 var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
     console.log(e.layer);
     L.DomEvent.stop(e);
 }).addTo(map); 
+
+
+// (async () => {
+//       const border = await fetch('http://localhost:5000/collections/arqmadeira_nutsi_caop2022/items?limit=1000', {
+//         headers: {
+//           'Accept': 'application/geo+json'
+//         }
+//       }).then(response => response.json());
+      
+//       L.geoJSON(border).addTo(map);
+
+//     })();
+
 
 
 </script>
