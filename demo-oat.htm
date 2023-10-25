@@ -71,22 +71,22 @@ var pbfURL='http://localhost:5000/collections/roads_korea/tiles/WorldCRS84Quad/{
 
 
 
-// var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
-//     console.log(e.layer);
-//     L.DomEvent.stop(e);
-// }).addTo(map); 
+var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
+    console.log(e.layer);
+    L.DomEvent.stop(e);
+}).addTo(map); 
 
 
-(async () => {
-      const border = await fetch('http://localhost:5000/collections/roads_korea/items?limit=100000', {
-        headers: {
-          'Accept': 'application/geo+json'
-        }
-      }).then(response => response.json());
+// (async () => {
+//       const border = await fetch('http://localhost:5000/collections/roads_korea/items?limit=100000', {
+//         headers: {
+//           'Accept': 'application/geo+json'
+//         }
+//       }).then(response => response.json());
       
-      L.geoJSON(border).addTo(map);
+//       L.geoJSON(border).addTo(map);
 
-    })();
+//     })();
 
 
 
