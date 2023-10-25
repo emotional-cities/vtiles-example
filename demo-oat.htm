@@ -71,10 +71,10 @@ var mapVectorTileOptions = {
 var pbfURL='http://localhost:5000/collections/pop_residente_2011_1k/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
 
 
-// var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
-//     console.log(e.layer);
-//     L.DomEvent.stop(e);
-// }).addTo(map); 
+var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
+    console.log(e.layer);
+    L.DomEvent.stop(e);
+}).addTo(map); 
 
 
 // (async () => {
