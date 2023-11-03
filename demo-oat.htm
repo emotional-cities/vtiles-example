@@ -6,7 +6,7 @@
 <script type="text/javascript" src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
 <script type="text/javascript" src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js"></script>
 <script>
-map = L.map('map').setView({ lng: -17.0070743, lat: 32.6601593 }, 6);
+map = L.map('map').setView({ lng: -9.142685, lat: 38.736946 }, 6);
 
 
 /*
@@ -66,10 +66,10 @@ var mapVectorTileOptions = {
     vectorTileLayerStyles: vectorTileStyling,
 };
 
-var pbfURL='http://localhost:9200/pop_residente_2011_1k/_mvt/geometry/{z}/{x}/{y}?grid_precision=0&size=1000000000';
+//var pbfURL='http://localhost:9200/pop_residente_2011_1k/_mvt/geometry/{z}/{x}/{y}?grid_precision=0&size=1000000000';
 //var pbfURL='http://localhost:9200/pop_residente_2011_1k/_mvt/geometry/{z}/{x}/{y}?&grid_precision=0&size=100000';
 //var pbfURL='http://localhost:5000/collections/arqmadeira_nutsi_caop2022/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
-//var pbfURL='http://localhost:5000/collections/pop_residente_2011_1k/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
+var pbfURL='http://localhost:5000/collections/pop_residente_2011_1k/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
 
 
 var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
