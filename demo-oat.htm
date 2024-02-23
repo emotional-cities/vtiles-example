@@ -49,12 +49,12 @@ var mapVectorTileOptions = {
 
 var pbfURL='http://localhost/collections/lisbon/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
 
-// var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
-//     console.log(e.layer);
-//     L.DomEvent.stop(e);
-// }).addTo(map); 
+/*  var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
+     console.log(e.layer);
+     L.DomEvent.stop(e);
+ }).addTo(map);  */
 
-
+const start = Date.now();
 (async () => {
       const border = await fetch('http://localhost/collections/pm10/items?limit=100000', {
         headers: {
@@ -63,20 +63,24 @@ var pbfURL='http://localhost/collections/lisbon/tiles/WorldCRS84Quad/{z}/{x}/{y}
       }).then(response => response.json());
       
       L.geoJSON(border).addTo(map);
+      const end = Date.now();
+      console.log(`Execution time for pm10: ${(end - start)/1000} s`);
 
     })();
 
+const start2 = Date.now();
+(async () => {
+  const border = await fetch('http://localhost/collections/lisbon_20210912_pr_/items?limit=100000', {
+    headers: {
+      'Accept': 'application/geo+json'
+    }
+  }).then(response => response.json());
+  
+  L.geoJSON(border).addTo(map);
+  const end2 = Date.now();
+  console.log(`Execution time for lisbon_20210912_pr_: ${(end2 - start2)/1000} s`);
 
-    (async () => {
-      const border = await fetch('http://localhost/collections/lisbon_20210912_pr_/items?limit=100000', {
-        headers: {
-          'Accept': 'application/geo+json'
-        }
-      }).then(response => response.json());
-      
-      L.geoJSON(border).addTo(map);
-
-    })();
+})();
 
 
 
