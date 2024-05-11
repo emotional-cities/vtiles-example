@@ -6,14 +6,12 @@
 <script type="text/javascript" src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
 <script type="text/javascript" src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js"></script>
 <script>
-map = L.map('map').setView({ lng: -0.08, lat: 51.509 }, 3);
+map = L.map('map').setView({ lng: -0.0575, lat: 51.50722 }, 11);
 map.addLayer(
-    new L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    subdomains: 'abcd',
+    new L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+	attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
     minZoom: 1,
-    maxZoom: 16,
-    ext: 'jpg'
+    maxZoom: 16
     }));
 
 /* const cmap = {
@@ -71,60 +69,53 @@ const cmap = {
 } 
 */
 
+function getColor(val){
+    return val < 0.5 ? "#DAF7A6":
+               val < 1 ? "#FFC300":
+               val < 1.5 ? "#FF5733":
+               val < 2 ? "#C70039":
+               "#900C3F";
+}
+
 var vectorTileStyling = {
     meta: function(properties) {
         return ({
-            fill: true,
+            fill: false,
             fillColor: "#ffffff",
             fillOpacity: 0.0,
-            weight: 1,
+            weight: 0,
             color: "green",
-            opacity: 0.7,
+            opacity: 0,
         });
     },
     hits: function(properties) {
+        //console.log(properties)
+        val = properties["properties.wprev_mean"]
         return ({
             fill: true,
-            fillColor: "#ffffff",
-            fillOpacity: 0.5,
+            fillColor: getColor(val),
+            fillOpacity: 0.7,
             weight: 1,
-            color: "red",
-            opacity: 0.7,
+            color: "#B29071",
+            opacity: 1,
         });
     }
 }
-/*
-var vectorTileStyling = {
-    "public.ne_50m_admin_0_countries": function(properties) {
-        return ({
-            fill: true,
-            fillColor: "#ffffff",
-            fillOpacity: 0.0,
-            weight: 1,
-            color: "green",
-            opacity: 0.7,
-        });
-    }
-}
-*/
 
 var mapVectorTileOptions = {
     rendererFactory: L.canvas.tile,
     interactive: true,
-    // maxNativeZoom: 11,
-    // minZoom: 1,
     vectorTileLayerStyles: vectorTileStyling,
 };
 
-var pbfURL='http://localhost:9200/arqmadeira_nutsi_caop2022,ef_aguasbalneares/_mvt/geometry/{z}/{x}/{y}?&grid_precision=0';
-//var pbfURL='https://emotional.byteroad.net/collections/hex350_grid_pm10_2019/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
-//var pbfURL='http://localhost:7800/public.ne_50m_admin_0_countries/{z}/{x}/{y}.pbf';
-//var pbfURL='http://localhost:5000/collections/arqmadeira_caop2022/tiles/WorldCRS84Quad/z/x/y?f=mvt';
-
-
-//var pbfURL='https://demo.pygeoapi.io/master/collections/lakes/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
+var pbfURL='https://emotional.byteroad.net/collections/hex350_grid_pm10_2019/tiles/WorldCRS84Quad/{z}/{x}/{y}?f=mvt';
+var pbfURL = 'https://emotional.byteroad.net/collections/hex350_grid_cardio_1920/tiles/WebMercatorQuad/{z}/{x}/{y}?f=mvt';
 
 var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
+    // L.popup()
+    // .setContent(e.layer.hits.properties["properties.wprev_mean"])
+    // .setLatLng(e.latlng)
+    // .openOn(map)
     console.log(e.layer);
     L.DomEvent.stop(e);
 }).addTo(map); 
