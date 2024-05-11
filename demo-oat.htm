@@ -118,19 +118,66 @@ var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{
 	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 });
 
-map = L.map('map', {layers: [World_Light_Gray_Base, mapPbfLayer_cardio, mapPbfLayer_pm10]}).setView({ lng: -0.0575, lat: 51.50722 }, 11);
+(async () => {
+      const border = await fetch('https://emotional.byteroad.net/collections/hex350_grid_cardio_1920/items?limit=5000', {
+        headers: {
+          'Accept': 'application/geo+json'
+        }
+      }).then(response => response.json());
 
-var overlayMaps = {
-    "Prevalence rates of cardiovascular diseases": mapPbfLayer_cardio,
-    "Annual mean PM10 based on output areas average concentrations": mapPbfLayer_pm10
-};
+    var f_cardio = L.geoJSON(border);
 
-var baseMaps = {
-    "OpenStreetMap": OpenStreetMap_Mapnik,
-    "Esri World Gray Canvas": World_Light_Gray_Base
-};
+    (async () => {
+      const border = await fetch('https://emotional.byteroad.net/collections/hex350_grid_pm10_2019/items?limit=5000', {
+        headers: {
+          'Accept': 'application/geo+json'
+        }
+      }).then(response => response.json());
 
-var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+        var myStyle = {
+        "color": "#ff7800",
+        "weight": 5,
+        "opacity": 0.65
+        };
+        var f_pm10 = L.geoJSON(border, {style: myStyle});
+
+
+        map = L.map('map', {layers: [World_Light_Gray_Base, f_cardio, f_pm10]}).setView({ lng: -0.0575, lat: 51.50722 }, 11);
+
+        var overlayMaps = {
+            "Prevalence rates of cardiovascular diseases": f_cardio,
+            "Annual mean PM10 based on output areas average concentrations": f_pm10,
+        };
+
+        var baseMaps = {
+            "OpenStreetMap": OpenStreetMap_Mapnik,
+            "Esri World Gray Canvas": World_Light_Gray_Base
+        };
+
+        var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+      
+        })();
+
+
+    })();
+
+
+/*     map = L.map('map', {layers: [World_Light_Gray_Base, mapPbfLayer_cardio, mapPbfLayer_pm10, features]}).setView({ lng: -0.0575, lat: 51.50722 }, 11);
+
+    var overlayMaps = {
+        "Prevalence rates of cardiovascular diseases": mapPbfLayer_cardio,
+        "Annual mean PM10 based on output areas average concentrations": mapPbfLayer_pm10,
+        "features": features
+    };
+
+    var baseMaps = {
+        "OpenStreetMap": OpenStreetMap_Mapnik,
+        "Esri World Gray Canvas": World_Light_Gray_Base
+    };
+
+    var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map); */
+
 
 </script>
 </body>
