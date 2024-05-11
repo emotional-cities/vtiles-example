@@ -161,7 +161,7 @@ let start = Date.now();
         var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
         let timeTaken = Date.now() - start;
-        console.log("Total time taken : " + timeTaken + " milliseconds"); //6887 milliseconds
+        console.log("Total time taken : " + timeTaken + " milliseconds"); //6887 milliseconds // 6.9 sec
       
         })();
 
@@ -184,7 +184,7 @@ let start = Date.now();
     var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
     let timeTaken = Date.now() - start;
-    console.log("Total time taken : " + timeTaken + " milliseconds"); //20 milliseconds
+    console.log("Total time taken : " + timeTaken + " milliseconds"); //20 milliseconds - 0.29%
 
 </script>
 </body>
