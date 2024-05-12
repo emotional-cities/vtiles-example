@@ -6,7 +6,7 @@ There is also code for loading feature layers and benchmarking the application s
 
 ![screenshot](/assets/screenshot.png)
 
-Check this live at: https://emotional-cities.github.io/vtiles-example/demo-oat.htm
+Check this live at: [https://emotional-cities.github.io/vtiles-example/demo-oat.htm](https://emotional-cities.github.io/vtiles-example/demo-oat.htm)
 
 ## License
 
