@@ -18,6 +18,14 @@
     <a class="github-fork-ribbon" href="https://github.com/emotional-cities/vtiles-example.git" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
 <script>
 
+function getCollection(url) {
+
+    pUrl = url.substr(0, url.indexOf('tiles')-1);
+    console.log(pUrl);
+
+    return pUrl;
+}
+
 
 function getColor_cardio(val){
     return val < 0.5 ? "#DAF7A6":
@@ -172,22 +180,36 @@ let start = Date.now();
     })();
  */
 
-     map = L.map('map', {layers: [World_Light_Gray_Base, mapPbfLayer_cardio, mapPbfLayer_pm10]}).setView({ lng: -0.0575, lat: 51.50722 }, 11);
+     map = L.map('map', {layers: [World_Light_Gray_Base, mapPbfLayer_cardio, mapPbfLayer_pm10]}).setView({ lng: 0, lat: 0 }, 11);
 
-    var overlayMaps = {
-        "Prevalence rates of cardiovascular diseases": mapPbfLayer_cardio,
-        "Annual mean PM10 based on output areas average concentrations": mapPbfLayer_pm10
-    };
+     (async () => {
 
-    var baseMaps = {
-        "OpenStreetMap": OpenStreetMap_Mapnik,
-        "Esri World Gray Canvas": World_Light_Gray_Base
-    };
+        // Retrieve title from collection metadata
+        const metadata_cardio = await fetch(getCollection(pbfURL_cardio)).then(response => response.json());
+        const metadata_pm10 = await fetch(getCollection(pbfURL_pm10)).then(response => response.json());
 
-    var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+        var overlayMaps = {
+        [metadata_cardio.title]: mapPbfLayer_cardio,
+        [metadata_pm10.title]: mapPbfLayer_pm10
+        };
 
-    let timeTaken = Date.now() - start;
-    console.log("Total time taken : " + timeTaken + " milliseconds"); //20 milliseconds - 0.29%
+        // Retrieve bounding box from collection metadata
+        const x = (metadata_cardio.extent.spatial.bbox[0][0] + metadata_cardio.extent.spatial.bbox[0][2])/ 2.0;
+        const y = (metadata_cardio.extent.spatial.bbox[0][1] + metadata_cardio.extent.spatial.bbox[0][3])/ 2.0;
+
+        map.flyTo({ lng: x, lat: y });
+
+        var baseMaps = {
+            "OpenStreetMap": OpenStreetMap_Mapnik,
+            "Esri World Gray Canvas": World_Light_Gray_Base
+        };
+
+        var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+        let timeTaken = Date.now() - start;
+        console.log("Total time taken : " + timeTaken + " milliseconds"); //20 milliseconds - 0.29%
+
+    })();
 
 </script>
 </body>
