@@ -19,63 +19,23 @@
 <script>
 
 
-function getColor_cardio(val){
-    return val < 0.5 ? "#DAF7A6":
-               val < 1 ? "#FFC300":
-               val < 1.5 ? "#FF5733":
-               val < 2 ? "#C70039":
+function getColor_solo(val){
+    return val == 'Discrepância' ? "#DAF7A6":
+               val == 'Solo Rústico' ? "#FFC300":
+               val == ' Solo Urbano' ? "#FF5733":
                "#900C3F";
 }
 
-function getColor_pm10(val){
-    return val < 0.25 ? "#00ffbf":
-               val < 0.35 ? "#0ad553":
-               val < 0.45 ? "#34bb30":
-               "#6f7874";
-}
-
 var vectorTileStyling = {
-    meta: function(properties) {
-        return ({
-            fill: false,
-            fillColor: "#ffffff",
-            fillOpacity: 0.0,
-            weight: 0,
-            color: "green",
-            opacity: 0,
-        });
-    },
-    hits: function(properties) {
-        console.log(properties)
-        val = properties["properties.wprev_mean"]
+    //crus_31_julho2024: function(properties) {
+        //'public.crus': function(properties) {
+        'crus_31_julho2024': function(properties) {
+        // console.log(properties)
+        val = properties["classe_202"]
+        // console.log(val)
         return ({
             fill: true,
-            fillColor: getColor_cardio(val),
-            fillOpacity: 0.7,
-            weight: 1,
-            color: "#B29071",
-            opacity: 1,
-        });
-    }
-}
-
-var vectorTileStyling2 = {
-    meta: function(properties) {
-        return ({
-            fill: false,
-            fillColor: "#ffffff",
-            fillOpacity: 0.0,
-            weight: 0,
-            color: "green",
-            opacity: 0,
-        });
-    },
-    hits: function(properties) {
-        //console.log(properties)
-        val = properties["properties.green_infrastructure_metric_table metric_table_cln_no2_mean_prop"]
-        return ({
-            fill: true,
-            fillColor: getColor_pm10(val),
+            fillColor: getColor_solo(val),
             fillOpacity: 0.7,
             weight: 1,
             color: "#B29071",
@@ -90,101 +50,29 @@ var mapVectorTileOptions = {
     vectorTileLayerStyles: vectorTileStyling,
 };
 
-var mapVectorTileOptions2 = {
-    rendererFactory: L.canvas.tile,
-    interactive: true,
-    vectorTileLayerStyles: vectorTileStyling2,
-};
 
-var pbfURL_cardio = 'https://emotional.byteroad.net/collections/hex350_grid_cardio_1920/tiles/WebMercatorQuad/{z}/{x}/{y}?f=mvt';
-var pbfURL_pm10 = 'https://emotional.byteroad.net/collections/hex350_grid_pm10_2019/tiles/WebMercatorQuad/{z}/{x}/{y}?f=mvt';
+// Martin url
+//var pbfURL = 'http://localhost:3000/crus_31_julho2024/{z}/{x}/{y}?f=mvt';
+var pbfURL = 'http://localhost/tiles/crus_31_julho2024/{z}/{x}/{y}?f=mvt';
 
-// create VectorGrid layers
-
-var mapPbfLayer_cardio = new L.VectorGrid.Protobuf(
-    pbfURL_cardio, mapVectorTileOptions
-);
-
-var mapPbfLayer_pm10 = new L.VectorGrid.Protobuf(
-    pbfURL_pm10, mapVectorTileOptions2
-);
-
-var World_Light_Gray_Base =
-    new L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-	attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
-    minZoom: 1,
-    maxZoom: 16
-    });
-
-var OpenStreetMap_Mapnik = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-	maxZoom: 19,
-	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-});
-
+// pg_tileserv
+//var pbfURL = 'http://localhost:7800/public.crus/{z}/{x}/{y}.pbf';
 
 let start = Date.now();
 
-/* (async () => {
-      const border = await fetch('https://emotional.byteroad.net/collections/hex350_grid_cardio_1920/items?limit=5000', {
-        headers: {
-          'Accept': 'application/geo+json'
-        }
-      }).then(response => response.json());
+    map = L.map('map').setView({ lng: -8.4292, lat: 40.2115 }, 6);
+    map.addLayer(
+        new L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+	    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+        minZoom: 1,
+        maxZoom: 16
+        }));
 
-    var f_cardio = L.geoJSON(border);
+    var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
+    console.log(e.layer);
+    L.DomEvent.stop(e);
+    }).addTo(map); 
 
-    (async () => {
-      const border = await fetch('https://emotional.byteroad.net/collections/hex350_grid_pm10_2019/items?limit=5000', {
-        headers: {
-          'Accept': 'application/geo+json'
-        }
-      }).then(response => response.json());
-
-
-        var myStyle = {
-        "color": "#ff7800",
-        "weight": 5,
-        "opacity": 0.65
-        };
-        var f_pm10 = L.geoJSON(border, {style: myStyle});
-
-
-        map = L.map('map', {layers: [World_Light_Gray_Base, f_cardio, f_pm10]}).setView({ lng: -0.0575, lat: 51.50722 }, 11);
-
-        var overlayMaps = {
-            "Prevalence rates of cardiovascular diseases": f_cardio,
-            "Annual mean PM10 based on output areas average concentrations": f_pm10,
-        };
-
-        var baseMaps = {
-            "OpenStreetMap": OpenStreetMap_Mapnik,
-            "Esri World Gray Canvas": World_Light_Gray_Base
-        };
-
-        var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-        let timeTaken = Date.now() - start;
-        console.log("Total time taken : " + timeTaken + " milliseconds"); //6887 milliseconds // 6.9 sec
-      
-        })();
-
-
-    })();
- */
-
-     map = L.map('map', {layers: [World_Light_Gray_Base, mapPbfLayer_cardio, mapPbfLayer_pm10]}).setView({ lng: -0.0575, lat: 51.50722 }, 11);
-
-    var overlayMaps = {
-        "Prevalence rates of cardiovascular diseases": mapPbfLayer_cardio,
-        "Annual mean PM10 based on output areas average concentrations": mapPbfLayer_pm10
-    };
-
-    var baseMaps = {
-        "OpenStreetMap": OpenStreetMap_Mapnik,
-        "Esri World Gray Canvas": World_Light_Gray_Base
-    };
-
-    var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
     let timeTaken = Date.now() - start;
     console.log("Total time taken : " + timeTaken + " milliseconds"); //20 milliseconds - 0.29%
