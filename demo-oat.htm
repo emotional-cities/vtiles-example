@@ -27,15 +27,14 @@ function getColor_solo(val){
 }
 
 var vectorTileStyling = {
-    //crus_31_julho2024: function(properties) {
-        //'public.crus': function(properties) {
+        //'crus': function(properties) {
         'crus_31_julho2024': function(properties) {
-        // console.log(properties)
+        //console.log(properties)
         val = properties["classe_202"]
         // console.log(val)
         return ({
             fill: true,
-            fillColor: getColor_solo(val),
+            fillColor: 'red', //getColor_solo(val),
             fillOpacity: 0.7,
             weight: 1,
             color: "#B29071",
@@ -51,12 +50,13 @@ var mapVectorTileOptions = {
 };
 
 
+var pbfURL = 'http://localhost/collections/crus/tiles/WebMercatorQuad/{z}/{x}/{y}?f=mvt';
 // Martin url
 //var pbfURL = 'http://localhost:3000/crus_31_julho2024/{z}/{x}/{y}?f=mvt';
-var pbfURL = 'http://localhost/tiles/crus_31_julho2024/{z}/{x}/{y}?f=mvt';
+//var pbfURL = 'http://localhost/tiles/crus_31_julho2024/{z}/{x}/{y}?f=mvt';
 
 // pg_tileserv
-//var pbfURL = 'http://localhost:7800/public.crus/{z}/{x}/{y}.pbf';
+//var pbfURL = 'http://localhost:7800/public.crus_31_julho2024/{z}/{x}/{y}.pbf';
 
 let start = Date.now();
 
