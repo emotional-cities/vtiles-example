@@ -1,5 +1,24 @@
 <html>
-<head><title>OGC API - Tiles Styling</title></head>
+<head><title>OGC API - Tiles Styling</title>
+
+<!-- Matomo -->
+<script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="//localhost/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '1']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <!-- End Matomo Code -->
+
+  
+</head>
 <body>
 <div id="map" style="width:100vw;height:100vh;"></div>
 
@@ -20,19 +39,19 @@
 
 
 function getColor_solo(val){
-    return val == 'Discrepância' ? "#DAF7A6":
+    return val == 'Não atribuída' ? "#DAF7A6":
                val == 'Solo Rústico' ? "#FFC300":
-               val == ' Solo Urbano' ? "#FF5733":
-               val == ' Espaços não classificados' ? "#C70039":
-               val == ' Solo Urbano Programado' ? "#900C3F":
+               val == 'Solo Urbano' ? "#FF5733":
+               val == 'Solo Urbano (urbanizável – transitório)' ? "#C70039":
+            //    val == ' Solo Urbano Programado' ? "#900C3F":
                "#581845";
 }
 
 var vectorTileStyling = {
-        //'crus': function(properties) {
-        'crus_31_julho2024': function(properties) {
-        //console.log(properties)
-        val = properties["classe_202"]
+        'crus': function(properties) {
+        // 'crus_31_julho2024': function(properties) {
+        console.log(properties)
+        val = properties["Classe_202"]
         // console.log(val)
         return ({
             fill: true,
@@ -52,7 +71,7 @@ var mapVectorTileOptions = {
 };
 
 
-var pbfURL = 'http://localhost/collections/crus/tiles/WebMercatorQuad/{z}/{x}/{y}?f=mvt';
+var pbfURL = 'https://ogcapi.byteroad.net/collections/crus/tiles/WebMercatorQuad/{z}/{x}/{y}?f=mvt';
 // Martin url
 //var pbfURL = 'http://localhost/tiles/crus_31_julho2024/{z}/{x}/{y}?f=mvt';
 
