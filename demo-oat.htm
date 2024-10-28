@@ -37,14 +37,6 @@
     <a class="github-fork-ribbon" href="https://github.com/emotional-cities/vtiles-example.git" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
 <script>
 
-function getCollection(url) {
-
-    pUrl = url.substr(0, url.indexOf('tiles')-1);
-    console.log(pUrl);
-
-    return pUrl;
-}
-
 
 function getColor_solo(val){
     return val == 'Não atribuída' ? "#DAF7A6":
@@ -102,23 +94,8 @@ let start = Date.now();
     }).addTo(map); 
 
 
-        // // Retrieve bounding box from collection metadata
-        // const x = (metadata_cardio.extent.spatial.bbox[0][0] + metadata_cardio.extent.spatial.bbox[0][2])/ 2.0;
-        // const y = (metadata_cardio.extent.spatial.bbox[0][1] + metadata_cardio.extent.spatial.bbox[0][3])/ 2.0;
-
-        // map.flyTo({ lng: x, lat: y });
-
-        // var baseMaps = {
-        //     "OpenStreetMap": OpenStreetMap_Mapnik,
-        //     "Esri World Gray Canvas": World_Light_Gray_Base
-        // };
-
-        // var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-        // let timeTaken = Date.now() - start;
-        // console.log("Total time taken : " + timeTaken + " milliseconds"); //20 milliseconds - 0.29%
-
-    // })();
+    let timeTaken = Date.now() - start;
+    console.log("Total time taken : " + timeTaken + " milliseconds"); //20 milliseconds - 0.29%
 
 </script>
 </body>
