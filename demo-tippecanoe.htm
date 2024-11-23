@@ -1,0 +1,86 @@
+<html>
+<head><title>OGC API - Tiles Styling</title>
+
+<!-- Matomo -->
+<script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="//matomo.byteroad.net/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '2']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <!-- End Matomo Code -->
+  
+
+  
+</head>
+<body>
+<div id="map" style="width:100vw;height:100vh;"></div>
+
+    <!-- load leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+    <!-- load VectorGrid extension -->
+    <script src="https://unpkg.com/leaflet.vectorgrid@1.3.0/dist/Leaflet.VectorGrid.bundled.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css" />
+
+    <a class="github-fork-ribbon" href="https://github.com/emotional-cities/vtiles-example.git" data-ribbon="Fork me on GitHub" title="Fork me on GitHub">Fork me on GitHub</a>
+<script>
+
+var vectorTileStyling = {
+        'lakes': function(properties) {
+        val = properties["id"]
+        //console.log(val)
+        return ({
+            fill: true,
+            fillColor: "#B29071", 
+            fillOpacity: 0.7,
+            weight: 1,
+            color: 'red',
+            opacity: 1,
+        });
+    }
+}
+
+var mapVectorTileOptions = {
+    rendererFactory: L.canvas.tile,
+    interactive: true,
+    vectorTileLayerStyles: vectorTileStyling,
+};
+
+
+var pbfURL = 'https://demo.pygeoapi.io/master/collections/lakes/tiles/WebMercatorQuad/{z}/{x}/{y}?f=mvt';
+
+let start = Date.now();
+
+    map = L.map('map').setView({ lng: 0, lat: 0 }, 3);
+    map.addLayer(
+        new L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+	    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+        minZoom: 1,
+        maxZoom: 16
+        }));
+
+    var pbfLayer=L.vectorGrid.protobuf(pbfURL,mapVectorTileOptions).on('click',function(e) {
+    console.log(e.layer);
+    L.DomEvent.stop(e);
+    }).addTo(map); 
+
+
+    let timeTaken = Date.now() - start;
+    console.log("Total time taken : " + timeTaken + " milliseconds"); //20 milliseconds - 0.29%
+
+</script>
+</body>
+</html>
